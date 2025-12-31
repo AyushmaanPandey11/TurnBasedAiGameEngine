@@ -4,6 +4,7 @@ public class Cell {
     int row;
     int col;
 
+
     public Cell( int row, int col ){
         this.col=col;
         this.row=row;

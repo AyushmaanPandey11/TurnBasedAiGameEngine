@@ -2,16 +2,24 @@ package Entity.boards;
 
 import Entity.game.Board;
 import Entity.game.Cell;
+import Entity.game.Grid;
+import Entity.game.Move;
 
 public class TicToeBoard extends Board {
-    String[][] cells = new String[3][3];
+    Grid[][] cells = new Grid[3][3];
 
-    public String getCell(int row, int col) {
+    public Grid getCell(int row, int col) {
         return cells[row][col];
     }
 
-    public void setCell(Cell cell, String value) {
-        cells[cell.getRow()][cell.getCol()]= value;
+    public void setCell(Move move, String value) {
+        Grid grid = new Grid(value,move.getPlayer());
+        cells[move.getCell().getRow()][move.getCell().getCol()]=grid;
+    }
+
+    @Override
+    public void move(Move move){
+        this.setCell(move,move.getPlayer().getValue());
     }
 
     @Override
@@ -23,7 +31,7 @@ public class TicToeBoard extends Board {
                     result += '-';
                     continue;
                 }
-                result += cells[row][col];
+                result += cells[row][col].getValue();
             }
             result += "\n";
         }
