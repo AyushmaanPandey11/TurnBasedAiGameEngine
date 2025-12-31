@@ -1,12 +1,10 @@
-package main.java;
-
-import main.java.Entity.boards.TicToeBoard;
-import main.java.Entity.game.Cell;
-import main.java.Entity.game.Move;
-import main.java.Entity.game.Player;
-import main.java.api.AIEngine;
-import main.java.api.GameEngine;
-import main.java.api.GameManager;
+import api.GameEngine;
+import Entity.boards.TicToeBoard;
+import Entity.game.Cell;
+import Entity.game.Move;
+import Entity.game.Player;
+import api.AIEngine;
+import api.GameManager;
 
 import java.util.Scanner;
 

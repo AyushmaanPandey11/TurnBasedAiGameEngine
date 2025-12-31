@@ -1,8 +1,8 @@
-package main.java.Entity.boards;
+package Entity.boards;
 
-import main.java.Entity.game.Board;
-import main.java.Entity.game.Grid;
-import main.java.Entity.game.Move;
+import Entity.game.Board;
+import Entity.game.Grid;
+import Entity.game.Move;
 
 public class TicToeBoard extends Board {
     Grid[][] cells = new Grid[3][3];

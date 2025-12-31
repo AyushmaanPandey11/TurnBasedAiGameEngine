@@ -1,7 +1,7 @@
-package main.java.api;
+package api;
 
-import main.java.Entity.boards.TicToeBoard;
-import main.java.Entity.game.*;
+import Entity.boards.TicToeBoard;
+import Entity.game.*;
 
 public class AIEngine {
     public Move suggestMove(Board board, Player player) {

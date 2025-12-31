@@ -1,4 +1,4 @@
-package main.java.Entity.game;
+package Entity.game;
 
 public class Player {
     private final String value;

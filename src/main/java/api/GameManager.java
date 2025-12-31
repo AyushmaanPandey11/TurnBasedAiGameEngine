@@ -1,13 +1,13 @@
-package main.java.api;
+package api;
 
-import main.java.Entity.boards.TicToeBoard;
-import main.java.Entity.game.Board;
-import main.java.Entity.game.GameResult;
-import main.java.Entity.game.Grid;
+import Entity.boards.TicToeBoard;
+import Entity.game.Board;
+import Entity.game.GameResult;
+import Entity.game.Grid;
 
 public class GameManager {
     public GameResult isComplete(Board board) {
-        if(board instanceof TicToeBoard boardInstance){
+        if(board instanceof  TicToeBoard boardInstance){
             // checking in the row
             boolean rowComplete = false;
             Grid grid = null;
