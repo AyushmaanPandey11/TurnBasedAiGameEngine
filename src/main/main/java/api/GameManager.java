@@ -1,9 +1,9 @@
-package api;
+package main.java.api;
 
-import Entity.boards.TicToeBoard;
-import Entity.game.Board;
-import Entity.game.GameResult;
-import Entity.game.Grid;
+import main.java.Entity.boards.TicToeBoard;
+import main.java.Entity.game.Board;
+import main.java.Entity.game.GameResult;
+import main.java.Entity.game.Grid;
 
 public class GameManager {
     public GameResult isComplete(Board board) {

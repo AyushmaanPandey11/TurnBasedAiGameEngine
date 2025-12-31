@@ -1,4 +1,4 @@
-package Entity.game;
+package main.java.Entity.game;
 
 import java.util.Objects;
 
