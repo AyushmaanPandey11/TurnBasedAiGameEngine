@@ -54,9 +54,6 @@ public class GamePlayTest {
     @Test
     public void playRowWin(){
         TicToeBoard board =  (TicToeBoard) GameEngine.start("TicTacToe");
-        Player user = new Player('O',"User"), computer = new Player('X',"bot");
-        int row,col;
-        int next =0;
         int[][] moves = new int[][]{ {0,0}, {0,1}, {0,2} };
         playGame(board,moves);
         Assert.assertTrue(gameManager.isComplete(board).isOver());
@@ -66,9 +63,6 @@ public class GamePlayTest {
     @Test
     public void playRevDiagWin(){
         TicToeBoard board =  (TicToeBoard) GameEngine.start("TicTacToe");
-        Player user = new Player('O',"User"), computer = new Player('X',"bot");
-        int row,col;
-        int next =0;
         int[][] moves = new int[][]{ {0,2}, {1,1}, {2,0} };
         playGame(board,moves);
         Assert.assertTrue(gameManager.isComplete(board).isOver());
@@ -78,9 +72,6 @@ public class GamePlayTest {
     @Test
     public void playDiagComputerWin(){
         TicToeBoard board =  (TicToeBoard) GameEngine.start("TicTacToe");
-        Player user = new Player('O',"User"), computer = new Player('X',"bot");
-        int row,col;
-        int next =0;
         int[][] moves = new int[][]{ {0,0}, {1,1}, {2,2} };
         playGame(board,moves);
         Assert.assertTrue(gameManager.isComplete(board).isOver());
