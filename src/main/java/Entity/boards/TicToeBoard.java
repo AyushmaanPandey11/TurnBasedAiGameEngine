@@ -18,7 +18,9 @@ public class TicToeBoard extends Board {
 
     @Override
     public void move(Move move){
-        this.setCell(move,move.getPlayer().getValue());
+        if( cells[move.getCell().getRow()][move.getCell().getCol()] == null ){
+            this.setCell(move,move.getPlayer().getValue());
+        }
     }
 
     @Override
