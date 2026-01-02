@@ -16,4 +16,8 @@ public class Player {
     public String getPlayerName() {
         return playerName;
     }
+
+    public Player flip(){
+        return new Player(value.equals('X') ? 'O': 'X', "User");
+    }
 }

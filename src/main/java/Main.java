@@ -17,7 +17,6 @@ public class Main {
         TicToeBoard board =  (TicToeBoard) GameEngine.start("TicTacToe");
         Player user = new Player('O',"User"), computer = new Player('X',"bot");
         while(!gameManager.isComplete(board).isOver()){
-            System.out.println(board.toString());
             System.out.println("Game started, Make your move! \n");
             int row,col;
             row = scanner.nextInt();

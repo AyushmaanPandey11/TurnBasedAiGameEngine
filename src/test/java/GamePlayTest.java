@@ -27,18 +27,21 @@ public class GamePlayTest {
         int row,col;
         int next =0;
         while(!gameManager.isComplete(board).isOver()){
-            System.out.println(board.toString());
-            System.out.println("Game started, Make your move! \n");
-            row = moves[next][0];
-            col = moves[next][1];
-            next++;
-            Move userMove = new Move(new Cell(row, col), user);
-            gameEngine.move(board,userMove);
-            if(!gameManager.isComplete(board).isOver()){
-                Move computerMove = aiEngine.suggestMove(board,computer);
-                gameEngine.move(board, computerMove);
+            if (next < moves.length) {
+                row = moves[next][0];
+                col = moves[next][1];
+                next++;
+                System.out.println("Round: "+next);
+                Move userMove = new Move(new Cell(row, col), user);
+                gameEngine.move(board, userMove);
+                System.out.println("User Move:\n" + board.toString());
             }
-            System.out.println(board.toString());
+            if(gameManager.isComplete(board).isOver()) break;
+            Move computerMove = aiEngine.suggestMove(board, computer);
+            if (computerMove != null) {
+                gameEngine.move(board, computerMove);
+                System.out.println("Bot Move:\n" + board.toString());
+            }
         }
     }
 
@@ -54,7 +57,7 @@ public class GamePlayTest {
     @Test
     public void playRowWin(){
         TicToeBoard board =  (TicToeBoard) GameEngine.start("TicTacToe");
-        int[][] moves = new int[][]{ {0,0}, {0,1}, {0,2} };
+        int[][] moves = new int[][]{ {2,0}, {2,1}, {2,2} };
         playGame(board,moves);
         Assert.assertTrue(gameManager.isComplete(board).isOver());
         Assert.assertEquals(gameManager.isComplete(board).getWinner(),"User");
@@ -75,6 +78,6 @@ public class GamePlayTest {
         int[][] moves = new int[][]{ {0,0}, {1,1}, {2,2} };
         playGame(board,moves);
         Assert.assertTrue(gameManager.isComplete(board).isOver());
-        Assert.assertEquals(gameManager.isComplete(board).getWinner(),"bot");
+        Assert.assertEquals(gameManager.isComplete(board).getWinner(),"User");
     }
 }

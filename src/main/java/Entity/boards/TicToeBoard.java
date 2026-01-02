@@ -4,7 +4,7 @@ import Entity.game.Board;
 import Entity.game.Grid;
 import Entity.game.Move;
 
-public class TicToeBoard extends Board {
+public class TicToeBoard implements Board {
     Grid[][] cells = new Grid[3][3];
 
     public Grid getCell(int row, int col) {
@@ -21,6 +21,15 @@ public class TicToeBoard extends Board {
         if( cells[move.getCell().getRow()][move.getCell().getCol()] == null ){
             this.setCell(move,move.getPlayer().getValue());
         }
+    }
+
+    @Override
+    public TicToeBoard copy() {
+        TicToeBoard boardCopy = new TicToeBoard();
+        for(int row=0; row< 3; row++){
+            System.arraycopy(cells[row],0,boardCopy.cells[row],0,3);
+        }
+        return boardCopy;
     }
 
     @Override
