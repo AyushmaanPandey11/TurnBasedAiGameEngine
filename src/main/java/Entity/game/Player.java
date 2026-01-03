@@ -1,15 +1,15 @@
 package Entity.game;
 
 public class Player {
-    private final String value;
+    private final char value;
     private final String playerName;
 
     public Player(char input, String name){
         this.playerName = name;
-        this.value = String.valueOf(input);
+        this.value = input;
     }
 
-    public String getValue() {
+    public char getValue() {
         return value;
     }
 
@@ -18,6 +18,8 @@ public class Player {
     }
 
     public Player flip(){
-        return new Player(value.equals('X') ? 'O': 'X', "User");
+        char newValue = (this.value == 'X') ? 'O' : 'X';
+        String newName = this.playerName.equals("bot") ? "User" : "bot";
+        return new Player(newValue, newName);
     }
 }

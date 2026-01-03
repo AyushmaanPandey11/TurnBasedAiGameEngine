@@ -11,14 +11,18 @@ public class TicToeBoard implements Board {
         return cells[row][col];
     }
 
-    public void setCell(Move move, String value) {
-        Grid grid = new Grid(value,move.getPlayer());
-        cells[move.getCell().getRow()][move.getCell().getCol()]=grid;
+    public void setCell(Move move, char value) {
+        if( cells[move.getCell().getRow()][move.getCell().getCol()] == null ){
+            Grid grid = new Grid(value,move.getPlayer());
+            cells[move.getCell().getRow()][move.getCell().getCol()]=grid;
+        } else {
+            throw new IllegalStateException();
+        }
     }
 
     @Override
     public void move(Move move){
-        if( cells[move.getCell().getRow()][move.getCell().getCol()] == null ){
+        if(move != null){
             this.setCell(move,move.getPlayer().getValue());
         }
     }

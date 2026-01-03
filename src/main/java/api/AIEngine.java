@@ -6,49 +6,47 @@ import Entity.game.*;
 public class AIEngine {
     public Move suggestMove(Board board, Player player) {
         if (board instanceof TicToeBoard boardInstance) {
-            Move move = null;
-            if (!isStarting(boardInstance, 4)) {
-                move = getSmartMove(boardInstance, player);
+            int limit = 3;
+            if (movesCount(boardInstance) >= limit) {
+                Move move = getSmartMove(boardInstance, player);
+                if(move != null ) return move;
             }
-            if (move == null) {
-                move = getBasicMove(boardInstance, player);
-            }
-            return move;
+            return getBasicMove(boardInstance,player);
         } else {
             throw new IllegalArgumentException();
         }
     }
 
-    private Move git add .(TicToeBoard board, Player bot){
+    private Move getSmartMove(TicToeBoard board, Player bot){
         // make move in a cell if it meets this two conditions
         // 1. this move will win bot the game by matching along row/column or diag
         // 2. stop user from winning the game.
         GameManager gameManager = new GameManager();
-        Move move= null;
 
         // victory move
         for (int row=0; row< 3; row++){
             for (int col=0;col <3; col++){
                 if( board.getCell(row,col) == null){
-                    move = new Move(new Cell(row,col),bot);
+                    Move move = new Move(new Cell(row,col),bot);
                     TicToeBoard boardCopy = board.copy();
                    boardCopy.move(move);
-                   if(gameManager.isComplete(boardCopy).getWinner().equals("bot")){
-                       return move;
-                   }
+                    if (bot.getPlayerName().equals(gameManager.isComplete(boardCopy).getWinner())) {
+                        return move;
+                    }
                 }
             }
         }
 
         // defensive move
+        Player opponent = bot.flip();
         for (int row=0; row< 3; row++){
             for (int col=0;col <3; col++){
                 if( board.getCell(row,col) == null){
-                    move = new Move(new Cell(row,col),bot.flip());
+                    Move move = new Move(new Cell(row,col),opponent);
                     TicToeBoard boardCopy = board.copy();
                     boardCopy.move(move);
-                    if(gameManager.isComplete(boardCopy).getWinner().equals("User")){
-                        return move;
+                    if (opponent.getPlayerName().equals(gameManager.isComplete(boardCopy).getWinner())) {
+                        return new Move(new Cell(row,col),bot);
                     }
                 }
             }
@@ -56,16 +54,16 @@ public class AIEngine {
         return null;
     }
 
-    private boolean isStarting(TicToeBoard board, int limit){
+    private int movesCount(TicToeBoard board){
         int count =0;
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 3; col++) {
                 if (board.getCell(row, col) != null) {
-                    count++;
+                    count = count+1;
                 }
             }
         }
-        return count < limit;
+        return count;
     }
 
     private Move getBasicMove(TicToeBoard boardInstance, Player bot){

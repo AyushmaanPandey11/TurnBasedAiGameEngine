@@ -3,15 +3,15 @@ package Entity.game;
 import java.util.Objects;
 
 public class Grid {
-    String value;
+    char value;
     Player player;
 
-    public Grid(String value, Player player){
+    public Grid(char value, Player player){
         this.value = value;
         this.player= player;
     }
 
-    public String getValue(){
+    public char getValue(){
         return this.value;
     }
 
