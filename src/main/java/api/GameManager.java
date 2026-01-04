@@ -5,86 +5,85 @@ import Entity.game.Board;
 import Entity.game.GameResult;
 import Entity.game.Grid;
 
+import java.util.function.BiFunction;
+import java.util.function.Function;
+
 public class GameManager {
     public GameResult isComplete(Board board) {
         if(board instanceof  TicToeBoard boardInstance){
+            BiFunction<Integer,Integer,Grid> getNextRow = boardInstance::getCell;
+            BiFunction<Integer,Integer,Grid> getNextCol = (row,col) -> boardInstance.getCell(col,row);
+
+            Function<Integer,Grid> getNextDiag = (row) -> boardInstance.getCell(row,row);
+            Function<Integer,Grid> getNextRevDiag = (row) -> boardInstance.getCell(row,2-row);
+
             // checking in the row
-            boolean rowComplete = false;
-            Grid grid = null;
-            for ( int row=0; row < 3; row++ ){
-                grid = boardInstance.getCell(row,0);
-                rowComplete = grid != null;
-                for ( int col =1; col < 3; col++ ){
-                    if(grid!= null && !(grid).equals(boardInstance.getCell(row,col))){
-                        rowComplete = false;
-                        break;
-                    }
-                }
-                if(rowComplete){
-                    break;
-                }
-            }
-            if(rowComplete){
-                return new GameResult(true, grid.getPlayer().getPlayerName());
-            }
+            GameResult gameResultRow = getSearchResult(getNextRow);
+            if(gameResultRow != null) return gameResultRow;
+
             // checking in the col
-            boolean colComplete = false;
-            for (int col = 0; col < 3; col++ ){
-                grid = boardInstance.getCell(0,col);
-                colComplete = grid != null;
-                for ( int row =1; row < 3; row++ ){
-                    if( grid != null && !grid.equals(boardInstance.getCell(row,col))){
-                        colComplete = false;
-                        break;
-                    }
-                }
-                if(colComplete){
-                    break;
-                }
-            }
-            if(colComplete){
-                return new GameResult(true, grid.getPlayer().getPlayerName());
-            }
+            GameResult gameResultCol = getSearchResult(getNextCol);
+            if(gameResultCol != null) return gameResultCol;
+
             // checking in the diagonal
-            grid = boardInstance.getCell(0,0);
-            boolean diagComplete = grid != null;
-            for ( int row=0; row < 3; row++ ){
-                if(grid != null && !grid.equals(boardInstance.getCell(row,row)) ){
-                    diagComplete = false;
-                    break;
-                }
-            }
-            if(diagComplete){
-                return new GameResult(true, grid.getPlayer().getPlayerName());
-            }
+            GameResult gameResultDiag = getDiagonalSearchResult(getNextDiag);
+            if(gameResultDiag != null) return gameResultDiag;
+
             // checking for reverse diagonal
-            grid = boardInstance.getCell(2,0);
-            boolean revdiagComplete = grid != null;
-            for ( int row= 0; row < 3; row++ ){
-
-                if( grid != null && !grid.equals(boardInstance.getCell(row,2-row)) ){
-                    revdiagComplete = false;
-                    break;
-                }
-            }
-
-            if(revdiagComplete){
-                return new GameResult(true, grid.getPlayer().getPlayerName());
-            }
+            GameResult gameResultRevDiag = getDiagonalSearchResult(getNextRevDiag);
+            if(gameResultRevDiag != null) return gameResultRevDiag;
 
             // game not won or incomplete
-            int countOfFilledCells = 0;
-            for ( int row = 0; row < 3; row++ ){
-                for (int col =0; col < 3; col++){
-                    if(((TicToeBoard) board).getCell(row,col) != null){
-                        countOfFilledCells++;
-                    }
-                }
-            }
-            if(countOfFilledCells == 9){
-                return new GameResult(true,"-");
-            }
+            GameResult gameNotWon = gameWonOrNot(boardInstance);
+            if(gameNotWon != null) return gameNotWon;
+
+
         }
         return new GameResult(false,"-");
+    }
+
+    public GameResult gameWonOrNot(TicToeBoard board){
+        int countOfFilledCells = 0;
+        for ( int row = 0; row < 3; row++ ){
+            for (int col =0; col < 3; col++){
+                if((board).getCell(row,col) != null){
+                    countOfFilledCells++;
+                }
+            }
+        }
+        if(countOfFilledCells == 9){
+            return new GameResult(true,"-");
+        }
+        return null;
+    }
+
+    public GameResult getDiagonalSearchResult(Function<Integer,Grid> getGrid){
+        boolean diagComplete = true;
+        for ( int row=0; row < 3; row++ ){
+            if(getGrid.apply(row) == null || !getGrid.apply(0).equals(getGrid.apply(row)) ){
+                diagComplete = false;
+                break;
+            }
+        }
+        if(diagComplete){
+            return new GameResult(true, getGrid.apply(0).getPlayer().getPlayerName());
+        }
+        return null;
+    }
+
+    public GameResult getSearchResult(BiFunction<Integer, Integer, Grid> getGrid  ){
+        for ( int row=0; row < 3; row++ ){
+            boolean isWinningStreak = true;
+            for ( int col =0; col < 3; col++ ){
+                if(getGrid.apply(row,0) == null || !(getGrid.apply(row,0).equals(getGrid.apply(row,col)))){
+                    isWinningStreak = false;
+                    break;
+                }
+            }
+            if(isWinningStreak){
+                return new GameResult(true, getGrid.apply(row,0).getPlayer().getPlayerName());
+            }
+        }
+        return null;
     }
 }
