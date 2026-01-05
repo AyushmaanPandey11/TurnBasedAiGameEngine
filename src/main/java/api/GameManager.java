@@ -10,39 +10,39 @@ import java.util.function.Function;
 
 public class GameManager {
     public GameResult isComplete(Board board) {
+        GameResult gameResult = new GameResult(false,"-");
         if(board instanceof  TicToeBoard boardInstance){
             BiFunction<Integer,Integer,Grid> getNextRow = boardInstance::getCell;
             BiFunction<Integer,Integer,Grid> getNextCol = (row,col) -> boardInstance.getCell(col,row);
-
+            // for diagonals
             Function<Integer,Grid> getNextDiag = (row) -> boardInstance.getCell(row,row);
             Function<Integer,Grid> getNextRevDiag = (row) -> boardInstance.getCell(row,2-row);
 
             // checking in the row
-            GameResult gameResultRow = getSearchResult(getNextRow);
-            if(gameResultRow != null) return gameResultRow;
+            gameResult = getSearchResult(getNextRow);
+            if(gameResult.isOver()) return gameResult;
 
             // checking in the col
-            GameResult gameResultCol = getSearchResult(getNextCol);
-            if(gameResultCol != null) return gameResultCol;
+            gameResult = getSearchResult(getNextCol);
+            if(gameResult.isOver()) return gameResult;
 
             // checking in the diagonal
-            GameResult gameResultDiag = getDiagonalSearchResult(getNextDiag);
-            if(gameResultDiag != null) return gameResultDiag;
+            gameResult = getDiagonalSearchResult(getNextDiag);
+            if(gameResult.isOver()) return gameResult;
 
             // checking for reverse diagonal
-            GameResult gameResultRevDiag = getDiagonalSearchResult(getNextRevDiag);
-            if(gameResultRevDiag != null) return gameResultRevDiag;
+            gameResult = getDiagonalSearchResult(getNextRevDiag);
+            if(gameResult.isOver()) return gameResult;
 
             // game not won or incomplete
-            GameResult gameNotWon = gameWonOrNot(boardInstance);
-            if(gameNotWon != null) return gameNotWon;
-
-
+            gameResult = gameWonOrNot(boardInstance);
+            if(gameResult.isOver()) return gameResult;
         }
-        return new GameResult(false,"-");
+        return gameResult;
     }
 
     public GameResult gameWonOrNot(TicToeBoard board){
+        GameResult gameResult = new GameResult(false,"-");
         int countOfFilledCells = 0;
         for ( int row = 0; row < 3; row++ ){
             for (int col =0; col < 3; col++){
@@ -52,38 +52,40 @@ public class GameManager {
             }
         }
         if(countOfFilledCells == 9){
-            return new GameResult(true,"-");
+            gameResult = new GameResult(true,"-");
         }
-        return null;
+        return gameResult;
     }
 
-    public GameResult getDiagonalSearchResult(Function<Integer,Grid> getGrid){
-        boolean diagComplete = true;
-        for ( int row=0; row < 3; row++ ){
-            if(getGrid.apply(row) == null || !getGrid.apply(0).equals(getGrid.apply(row)) ){
-                diagComplete = false;
-                break;
-            }
-        }
-        if(diagComplete){
-            return new GameResult(true, getGrid.apply(0).getPlayer().getPlayerName());
-        }
-        return null;
+    public GameResult getDiagonalSearchResult(Function<Integer,Grid> traversal){
+        return traverse(traversal);
     }
 
     public GameResult getSearchResult(BiFunction<Integer, Integer, Grid> getGrid  ){
+        GameResult gameResult = new GameResult(false,"-");
         for ( int row=0; row < 3; row++ ){
-            boolean isWinningStreak = true;
-            for ( int col =0; col < 3; col++ ){
-                if(getGrid.apply(row,0) == null || !(getGrid.apply(row,0).equals(getGrid.apply(row,col)))){
-                    isWinningStreak = false;
-                    break;
-                }
-            }
-            if(isWinningStreak){
-                return new GameResult(true, getGrid.apply(row,0).getPlayer().getPlayerName());
+            final int finalRow = row;
+            Function<Integer,Grid> traversal = (index) -> getGrid.apply(finalRow,index);
+            gameResult = traverse(traversal);
+            if(gameResult.isOver()) {
+                break;
             }
         }
-        return null;
+        return gameResult;
+    }
+
+    public GameResult traverse(Function<Integer,Grid> traversal){
+        GameResult gameResult = new GameResult(false,"-");
+        boolean isWinningStreak = true;
+        for ( int col =0; col < 3; col++ ){
+            if(traversal.apply(col) == null || !traversal.apply(0).equals(traversal.apply(col))){
+                isWinningStreak = false;
+                break;
+            }
+        }
+        if(isWinningStreak){
+            gameResult = new GameResult(true, traversal.apply(0).getPlayer().getPlayerName());
+        }
+        return gameResult;
     }
 }
