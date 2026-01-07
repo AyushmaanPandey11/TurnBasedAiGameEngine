@@ -4,19 +4,19 @@ import Entity.game.Cell;
 import Entity.game.Move;
 import Entity.game.Player;
 import api.GameEngine;
-import api.GameManager;
+import api.RuleEngine;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 public class GamePlayTest {
-    GameManager gameManager;
+    RuleEngine gameManager;
     GameEngine gameEngine;
 
     @Before
     public void setup(){
         gameEngine = new GameEngine();
-        gameManager = new GameManager();
+        gameManager = new RuleEngine();
     }
 
     private void playGame(Board board, int[][] firstPlayerMove, int[][] secondPlayerMove){

@@ -1,14 +1,48 @@
 package api;
 
 import Entity.boards.TicToeBoard;
-import Entity.game.Board;
-import Entity.game.GameResult;
-import Entity.game.Grid;
+import Entity.game.*;
 
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-public class GameManager {
+public class RuleEngine {
+    public GameInfo getGameInfo(Board board){
+        if (board instanceof TicToeBoard boardInstance){
+            GameResult gameResult = isComplete(boardInstance);
+            char[] players = new char[]{'X','O'};
+            for (char c : players) {
+                for (int outRow = 0; outRow < 3; outRow++) {
+                    for (int outCol = 0; outCol < 3; outCol++) {
+                        Board board1 = boardInstance.copy();
+                        Player player = new Player(c, "User");
+                        board1.move(new Move(new Cell(outRow, outCol), player));
+                        boolean OpponentAlwaysWins = false;
+                        for (int inRow = 0; inRow < 3; inRow++) {
+                            for (int inCol = 0; inCol < 3; inCol++) {
+                                Board board2 = board1.copy();
+                                board2.move(new Move(new Cell(inRow, inCol), player.flip()));
+                                if (isComplete(board2).getWinner().equals(player.flip().getPlayerName())) {
+                                    OpponentAlwaysWins = true;
+                                    break;
+                                }
+                            }
+                            if (OpponentAlwaysWins) {
+                                break;
+                            }
+                        }
+                        if (OpponentAlwaysWins) {
+                            return new GameInfo(gameResult, true, player.flip());
+                        }
+                    }
+                }
+            }
+            return new GameInfo(gameResult,false,null);
+        } else {
+            throw new IllegalArgumentException();
+        }
+    }
+
     public GameResult isComplete(Board board) {
         GameResult gameResult = new GameResult(false,"-");
         if(board instanceof  TicToeBoard boardInstance){

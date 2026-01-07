@@ -21,7 +21,7 @@ public class AIEngine {
         // make move in a cell if it meets this two conditions
         // 1. this move will win bot the game by matching along row/column or diag
         // 2. stop user from winning the game.
-        GameManager gameManager = new GameManager();
+        RuleEngine gameManager = new RuleEngine();
 
         // victory move
         for (int row=0; row< 3; row++){
