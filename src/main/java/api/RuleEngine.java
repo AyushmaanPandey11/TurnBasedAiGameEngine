@@ -3,10 +3,24 @@ package api;
 import Entity.boards.TicToeBoard;
 import Entity.game.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
 public class RuleEngine {
+    private final HashMap<String, List<Rule<TicToeBoard>>> ruleMap = new HashMap<>();
+
+    public RuleEngine(){
+        ruleMap.put(TicToeBoard.class.getName(),new ArrayList<>());
+        ruleMap.get(TicToeBoard.class.getName()).add(new Rule<>(ticToeBoard -> getSearchResult(ticToeBoard::getCell)));
+        ruleMap.get(TicToeBoard.class.getName()).add(new Rule<>(ticToeBoard -> getSearchResult((row,col) -> ticToeBoard.getCell(col,row))));
+        ruleMap.get(TicToeBoard.class.getName()).add(new Rule<>(ticToeBoard -> getDiagonalSearchResult((row) -> ticToeBoard.getCell(row,row))));
+        ruleMap.get(TicToeBoard.class.getName()).add(new Rule<>(ticToeBoard -> getDiagonalSearchResult((row) -> ticToeBoard.getCell(row,2-row))));
+        ruleMap.get(TicToeBoard.class.getName()).add(new Rule<>(this::gameWonOrNot));
+    }
+
     public GameInfo getGameInfo(Board board){
         if (board instanceof TicToeBoard boardInstance){
             GameResult gameResult = isComplete(boardInstance);
@@ -46,31 +60,13 @@ public class RuleEngine {
     public GameResult isComplete(Board board) {
         GameResult gameResult = new GameResult(false,"-");
         if(board instanceof  TicToeBoard boardInstance){
-            BiFunction<Integer,Integer,Grid> getNextRow = boardInstance::getCell;
-            BiFunction<Integer,Integer,Grid> getNextCol = (row,col) -> boardInstance.getCell(col,row);
-            // for diagonals
-            Function<Integer,Grid> getNextDiag = (row) -> boardInstance.getCell(row,row);
-            Function<Integer,Grid> getNextRevDiag = (row) -> boardInstance.getCell(row,2-row);
-
-            // checking in the row
-            gameResult = getSearchResult(getNextRow);
-            if(gameResult.isOver()) return gameResult;
-
-            // checking in the col
-            gameResult = getSearchResult(getNextCol);
-            if(gameResult.isOver()) return gameResult;
-
-            // checking in the diagonal
-            gameResult = getDiagonalSearchResult(getNextDiag);
-            if(gameResult.isOver()) return gameResult;
-
-            // checking for reverse diagonal
-            gameResult = getDiagonalSearchResult(getNextRevDiag);
-            if(gameResult.isOver()) return gameResult;
-
-            // game not won or incomplete
-            gameResult = gameWonOrNot(boardInstance);
-            if(gameResult.isOver()) return gameResult;
+              List<Rule<TicToeBoard>> ruleList = ruleMap.get(TicToeBoard.class.getName());
+              for (Rule<TicToeBoard> rule : ruleList){
+                  GameResult result = rule.getRule().apply(boardInstance);
+                  if (result.isOver()){
+                      return result;
+                  }
+              }
         }
         return gameResult;
     }
