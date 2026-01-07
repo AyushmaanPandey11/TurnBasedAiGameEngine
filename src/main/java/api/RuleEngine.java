@@ -46,12 +46,21 @@ public class RuleEngine {
                             }
                         }
                         if (OpponentAlwaysWins) {
-                            return new GameInfo(gameResult, true, player.flip());
+                            return new GameInfoBuilder()
+                                    .setWinner(gameResult.getWinner())
+                                    .setHasFork(true)
+                                    .setPlayer(player.flip())
+                                    .setIsOver(gameResult.isOver())
+                                    .build();
                         }
                     }
                 }
             }
-            return new GameInfo(gameResult,false,null);
+            return new GameInfoBuilder()
+                    .setWinner(gameResult.getWinner())
+                    .setHasFork(false)
+                    .setIsOver(gameResult.isOver())
+                    .build();
         } else {
             throw new IllegalArgumentException();
         }
