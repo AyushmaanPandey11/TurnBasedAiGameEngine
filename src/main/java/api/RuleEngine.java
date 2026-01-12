@@ -31,6 +31,7 @@ public class RuleEngine {
         if (board instanceof TicToeBoard boardInstance){
             GameResult gameResult = isComplete(boardInstance);
             char[] players = new char[]{'X','O'};
+            Cell forkCell=null;
             for (char c : players) {
                 for (int outRow = 0; outRow < 3; outRow++) {
                     for (int outCol = 0; outCol < 3; outCol++) {
@@ -41,7 +42,8 @@ public class RuleEngine {
                         for (int inRow = 0; inRow < 3; inRow++) {
                             for (int inCol = 0; inCol < 3; inCol++) {
                                 Board board2 = board1.copy();
-                                board2.move(new Move(new Cell(inRow, inCol), player.flip()));
+                                forkCell = new Cell(inRow, inCol);
+                                board2.move(new Move(forkCell, player.flip()));
                                 if (isComplete(board2).getWinner().equals(player.flip().getPlayerName())) {
                                     OpponentAlwaysWins = true;
                                     break;
@@ -56,6 +58,7 @@ public class RuleEngine {
                                     .setWinner(gameResult.getWinner())
                                     .setHasFork(true)
                                     .setPlayer(player.flip())
+                                    .setForkCell(forkCell)
                                     .setIsOver(gameResult.isOver())
                                     .build();
                         }

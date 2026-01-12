@@ -6,6 +6,7 @@ public class GameInfoBuilder {
     private boolean hasFork;
     private Player player;
     private int moveCount;
+    private Cell forkCell;
 
     // Change return type to GameInfoBuilder and return "this"
     public GameInfoBuilder setHasFork(boolean hasFork){
@@ -33,7 +34,13 @@ public class GameInfoBuilder {
         return this;
     }
 
-    public GameInfo build(){
-        return new GameInfo(winner, isOver, hasFork, player, moveCount);
+    public GameInfoBuilder setForkCell(Cell cell){
+        this.forkCell = cell;
+        return this;
     }
+
+    public GameInfo build(){
+        return new GameInfo(winner, isOver, hasFork, player, moveCount,forkCell);
+    }
+
 }
