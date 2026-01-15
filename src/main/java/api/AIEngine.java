@@ -2,6 +2,10 @@ package api;
 
 import Entity.boards.TicToeBoard;
 import Entity.game.*;
+import placements.AttackPlacement;
+import placements.Placement;
+
+import java.util.Optional;
 
 public class AIEngine {
     RuleEngine rules = new RuleEngine();
@@ -25,32 +29,13 @@ public class AIEngine {
     }
 
     private Cell getOptimalMove(TicToeBoard board, Player player){
-        Cell cell= null;
-        // Ordered rules
-        // 1. winning move, take it
-        cell = getVictoryCell(board,player,rules);
-        if(cell != null) return cell;
-        // 2. opp has winning move, block
-        cell = getDefendingCell(board,player.flip(),rules);
-        if(cell != null) return cell;
-        // 3. user has fork, take it
-        GameInfo gameInfo = rules.getGameInfo(board);
-        if(gameInfo.hasFork()){
-            cell = gameInfo.getForkCell();
-            if(cell != null) return cell;
-        }
-        // 4. opps has fork, block it
-
-        // if center is available, take it
-        if( board.getCell(1,1) == null ){
-            return new Cell(1,1);
-        }
-        // if corner is available, take it
-        final int[][] corners = new int[][]{{0,0},{2,0},{0,2},{2,2}};
-        for (int index=0;index < 4; index++){
-            if (board.getCell(corners[index][0],corners[index][1]) == null){
-                return new Cell(corners[index][0],corners[index][1]);
+        Placement placement = AttackPlacement.getInstance();
+        while(placement.next() != null){
+            Optional<Cell> cell = placement.place(board,player);
+            if(cell.isPresent()){
+                return cell.get();
             }
+            placement.next();
         }
         return null;
     }

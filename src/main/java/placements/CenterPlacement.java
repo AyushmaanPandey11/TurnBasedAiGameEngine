@@ -1,6 +1,9 @@
 package placements;
 
+import Entity.boards.TicToeBoard;
 import Entity.game.Cell;
+import Entity.game.Player;
+import utils.Utils;
 
 import java.util.Optional;
 
@@ -9,20 +12,22 @@ public class CenterPlacement implements Placement{
 
     CenterPlacement(){}
 
-    public static CenterPlacement getInstance(){
-        if(centerPlacement == null){
-            centerPlacement = new CenterPlacement();
-        }
+    public synchronized static Placement getInstance(){
+        centerPlacement = (CenterPlacement) Utils.getIfNull(centerPlacement, CenterPlacement::new);
         return centerPlacement;
     }
 
     @Override
     public Placement next() {
-        return null;
+        return CornerPlacement.getInstance();
     }
 
     @Override
-    public Optional<Cell> place() {
-        return Optional.empty();
+    public Optional<Cell> place(TicToeBoard board, Player player) {
+        Cell cell = null;
+        if( board.getCell(1,1) == null ){
+            cell = new Cell(1,1);
+        }
+        return Optional.ofNullable(cell);
     }
 }
