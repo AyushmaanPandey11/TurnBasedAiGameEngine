@@ -6,7 +6,7 @@ import Entity.game.*;
 import java.util.HashMap;
 
 public class RuleEngine {
-    private final HashMap<Class<? extends Board>, RuleSet<? extends Board>> ruleMap = new HashMap<>();
+    private final HashMap<Class<? extends Board>, RuleSet> ruleMap = new HashMap<>();
 
     public RuleEngine(){
         ruleMap.put(TicToeBoard.class,TicToeBoard.getRules());
@@ -15,9 +15,8 @@ public class RuleEngine {
     public GameResult isComplete(Board board) {
         GameResult gameResult = new GameResult(false,"-");
         if(board instanceof  TicToeBoard boardInstance){
-            @SuppressWarnings("unchecked")
-            RuleSet<TicToeBoard> ruleList = (RuleSet<TicToeBoard>) ruleMap.get(TicToeBoard.class);
-            for (Rule<TicToeBoard> rule : ruleList){
+            RuleSet ruleList = ruleMap.get(TicToeBoard.class);
+            for (Rule rule : ruleList){
                 GameResult result = rule.getRule().apply(boardInstance);
                 if (result.isOver()){
                     return result;
@@ -35,15 +34,13 @@ public class RuleEngine {
             for (char c : players) {
                 for (int outRow = 0; outRow < 3; outRow++) {
                     for (int outCol = 0; outCol < 3; outCol++) {
-                        Board board1 = boardInstance.copy();
                         Player player = new Player(c, "User");
-                        board1.move(new Move(new Cell(outRow, outCol), player));
+                        Board board1 = boardInstance.move(new Move(new Cell(outRow, outCol), player));
                         boolean OpponentAlwaysWins = false;
                         for (int inRow = 0; inRow < 3; inRow++) {
                             for (int inCol = 0; inCol < 3; inCol++) {
-                                Board board2 = board1.copy();
                                 forkCell = new Cell(inRow, inCol);
-                                board2.move(new Move(forkCell, player.flip()));
+                                Board board2 = board1.move(new Move(forkCell, player.flip()));
                                 if (isComplete(board2).getWinner().equals(player.flip().getPlayerName())) {
                                     OpponentAlwaysWins = true;
                                     break;

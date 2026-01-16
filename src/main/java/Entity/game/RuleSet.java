@@ -2,15 +2,15 @@ package Entity.game;
 
 import java.util.*;
 
-public class RuleSet<T extends Board> implements Iterable<Rule<T>> {
-    Set<Rule<T>> ruleList = new HashSet<>();
+public class RuleSet implements Iterable<Rule> {
+    Set<Rule> ruleList = new HashSet<>();
 
-    public void add(Rule<T> boardRule) {
+    public void add(Rule boardRule) {
         ruleList.add(boardRule);
     }
 
     @Override
-    public Iterator<Rule<T>> iterator() {
+    public Iterator<Rule> iterator() {
         return ruleList.iterator();
     }
 }

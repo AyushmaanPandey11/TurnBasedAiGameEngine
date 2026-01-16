@@ -2,12 +2,14 @@ package Entity.boards;
 
 import Entity.game.*;
 
+import java.util.HashMap;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-public class TicToeBoard implements Board {
+public class TicToeBoard implements CellBoard {
     private final Grid[][] cells = new Grid[3][3];
-    static RuleSet<TicToeBoard> rules = new RuleSet<>();
+    static RuleSet rules = new RuleSet();
+    private History history = new History();
 
     public Grid getCell(int row, int col) {
         return cells[row][col];
@@ -23,16 +25,16 @@ public class TicToeBoard implements Board {
         }
     }
 
-    public static RuleSet<TicToeBoard> getRules(){
-        rules.add(new Rule<>(ticTacToeBoard -> getSearchResult(ticTacToeBoard::getCell)));
-        rules.add(new Rule<>(ticTacToeBoard -> getSearchResult((row,col) -> ticTacToeBoard.getCell(col,row))));
-        rules.add(new Rule<>(ticTacToeBoard -> getDiagonalSearchResult((row) -> ticTacToeBoard.getCell(row,row))));
-        rules.add(new Rule<>(ticTacToeBoard -> getDiagonalSearchResult((row) -> ticTacToeBoard.getCell(row,2-row))));
-        rules.add(new Rule<>(TicToeBoard::gameWonOrNot));
+    public static RuleSet getRules(){
+        rules.add(new Rule(ticTacToeBoard -> getSearchResult(ticTacToeBoard::getCell)));
+        rules.add(new Rule(ticTacToeBoard -> getSearchResult((row,col) -> ticTacToeBoard.getCell(col,row))));
+        rules.add(new Rule(ticTacToeBoard -> getDiagonalSearchResult((row) -> ticTacToeBoard.getCell(row,row))));
+        rules.add(new Rule(ticTacToeBoard -> getDiagonalSearchResult((row) -> ticTacToeBoard.getCell(row,2-row))));
+        rules.add(new Rule(TicToeBoard::gameWonOrNot));
         return rules;
     }
 
-    public static GameResult gameWonOrNot(TicToeBoard board){
+    public static GameResult gameWonOrNot(CellBoard board){
         GameResult gameResult = new GameResult(false,"-");
         int countOfFilledCells = 0;
         for ( int row = 0; row < 3; row++ ){
@@ -81,10 +83,11 @@ public class TicToeBoard implements Board {
     }
 
     @Override
-    public void move(Move move){
-        if(move != null){
-            this.setCell(move,move.getPlayer().getValue());
-        }
+    public Board move(Move move){
+        TicToeBoard board = copy();
+        board.setCell(move,move.getPlayer().getValue());
+        history.add(this);
+        return board;
     }
 
     @Override

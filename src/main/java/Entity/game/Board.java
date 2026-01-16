@@ -1,6 +1,6 @@
 package Entity.game;
 
 public interface Board {
-    void move(Move move);
+    Board move(Move move);
     Board copy();
 }

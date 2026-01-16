@@ -1,15 +1,17 @@
 package Entity.game;
 
+import Entity.boards.CellBoard;
+
 import java.util.function.Function;
 
-public class Rule<T extends Board>{
-    private final Function<T,GameResult> condition;
+public class Rule{
+    private final Function<CellBoard,GameResult> condition;
 
-    public Rule(Function<T,GameResult> condition){
+    public Rule(Function<CellBoard,GameResult> condition){
         this.condition = condition;
     }
 
-    public Function<T,GameResult> getRule(){
+    public Function<CellBoard,GameResult> getRule(){
         return this.condition;
     }
 }

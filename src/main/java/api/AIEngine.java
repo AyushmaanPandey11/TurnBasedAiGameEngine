@@ -59,8 +59,7 @@ public class AIEngine {
             for (int col=0;col <3; col++){
                 if( board.getCell(row,col) == null){
                     Move move = new Move(new Cell(row,col), opponent);
-                    TicToeBoard boardCopy = board.copy();
-                    boardCopy.move(move);
+                    TicToeBoard boardCopy = (TicToeBoard) board.move(move);
                     if (opponent.getPlayerName().equals(rules.isComplete(boardCopy).getWinner())) {
                         return new Cell(row, col);
                     }
@@ -75,8 +74,7 @@ public class AIEngine {
             for (int col=0;col <3; col++){
                 if( board.getCell(row,col) == null){
                     Move move = new Move(new Cell(row,col), bot);
-                    TicToeBoard boardCopy = board.copy();
-                   boardCopy.move(move);
+                    TicToeBoard boardCopy = (TicToeBoard) board.move(move);
                     if (bot.getPlayerName().equals(rules.isComplete(boardCopy).getWinner())) {
                         return new Cell(row, col);
                     }
