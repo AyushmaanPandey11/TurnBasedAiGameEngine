@@ -1,6 +1,6 @@
 package placements;
 
-import Entity.boards.TicToeBoard;
+import Entity.boards.TicTacToeBoard;
 import Entity.game.Cell;
 import Entity.game.Player;
 import utils.Utils;
@@ -22,7 +22,7 @@ public class CornerPlacement implements Placement{
         return null;
     }
 
-    private static Cell getCornerCell(TicToeBoard board){
+    private static Cell getCornerCell(TicTacToeBoard board){
         final int[][] corners = new int[][]{{0,0},{2,0},{0,2},{2,2}};
         for (int index=0;index < 4; index++){
             if (board.getCell(corners[index][0],corners[index][1]) == null){
@@ -33,7 +33,7 @@ public class CornerPlacement implements Placement{
     }
 
     @Override
-    public Optional<Cell> place(TicToeBoard board, Player player) {
+    public Optional<Cell> place(TicTacToeBoard board, Player player) {
         return Optional.ofNullable(getCornerCell(board));
     }
 }

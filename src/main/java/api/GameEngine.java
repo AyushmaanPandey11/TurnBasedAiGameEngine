@@ -1,6 +1,6 @@
 package api;
 
-import Entity.boards.TicToeBoard;
+import Entity.boards.TicTacToeBoard;
 import Entity.game.*;
 
 public class GameEngine {
@@ -9,13 +9,13 @@ public class GameEngine {
             System.out.println("Null Move coming");
             return;
         }
-        if(board instanceof TicToeBoard boardInstance){
+        if(board instanceof TicTacToeBoard boardInstance){
             board.move(move);
         }
     }
     public static Board start(String type){
         if(type.equals("TicTacToe")){
-            return new TicToeBoard();
+            return new TicTacToeBoard();
         } else {
             throw new IllegalArgumentException();
         }

@@ -1,6 +1,6 @@
 package placements;
 
-import Entity.boards.TicToeBoard;
+import Entity.boards.TicTacToeBoard;
 import Entity.game.Cell;
 import Entity.game.GameInfo;
 import Entity.game.Player;
@@ -24,7 +24,7 @@ public class ForkPlacement implements Placement {
     }
 
     @Override
-    public Optional<Cell> place(TicToeBoard board, Player player) {
+    public Optional<Cell> place(TicTacToeBoard board, Player player) {
         Cell cell = null;
         GameInfo gameInfo = rules.getGameInfo(board);
         if(gameInfo.hasFork()){

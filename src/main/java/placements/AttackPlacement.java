@@ -1,6 +1,6 @@
 package placements;
 
-import Entity.boards.TicToeBoard;
+import Entity.boards.TicTacToeBoard;
 import Entity.game.Cell;
 import Entity.game.Move;
 import Entity.game.Player;
@@ -18,12 +18,12 @@ public class AttackPlacement implements Placement{
         return instance;
     }
 
-    private static Cell getVictoryCell(TicToeBoard board, Player player) {
+    private static Cell getVictoryCell(TicTacToeBoard board, Player player) {
         for (int row=0; row< 3; row++){
             for (int col=0;col <3; col++){
                 if( board.getCell(row,col) == null){
                     Move move = new Move(new Cell(row,col), player);
-                    TicToeBoard boardCopy = board.copy();
+                    TicTacToeBoard boardCopy = board.copy();
                     boardCopy.move(move);
                     if (player.getPlayerName().equals(rules.isComplete(boardCopy).getWinner())) {
                         return new Cell(row, col);
@@ -40,7 +40,7 @@ public class AttackPlacement implements Placement{
     }
 
     @Override
-    public Optional<Cell> place(TicToeBoard board, Player player) {
+    public Optional<Cell> place(TicTacToeBoard board, Player player) {
         return Optional.ofNullable(getVictoryCell(board,player));
     }
 }

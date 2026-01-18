@@ -1,5 +1,5 @@
 import api.GameEngine;
-import Entity.boards.TicToeBoard;
+import Entity.boards.TicTacToeBoard;
 import Entity.game.Cell;
 import Entity.game.Move;
 import Entity.game.Player;
@@ -14,7 +14,7 @@ public class Main {
         GameEngine gameEngine = new GameEngine();
         RuleEngine ruleEngine = new RuleEngine();
         AIEngine aiEngine = new AIEngine();
-        TicToeBoard board =  (TicToeBoard) GameEngine.start("TicTacToe");
+        TicTacToeBoard board =  (TicTacToeBoard) GameEngine.start("TicTacToe");
         Player user = new Player('O',"User"), computer = new Player('X',"bot");
         while(!ruleEngine.isComplete(board).isOver()){
             System.out.println("Game started, Make your move! \n");

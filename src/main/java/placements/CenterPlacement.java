@@ -1,6 +1,6 @@
 package placements;
 
-import Entity.boards.TicToeBoard;
+import Entity.boards.TicTacToeBoard;
 import Entity.game.Cell;
 import Entity.game.Player;
 import utils.Utils;
@@ -23,7 +23,7 @@ public class CenterPlacement implements Placement{
     }
 
     @Override
-    public Optional<Cell> place(TicToeBoard board, Player player) {
+    public Optional<Cell> place(TicTacToeBoard board, Player player) {
         Cell cell = null;
         if( board.getCell(1,1) == null ){
             cell = new Cell(1,1);

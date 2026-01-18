@@ -1,23 +1,28 @@
 package Entity.game;
 
-import Entity.boards.TicToeBoard;
+import Entity.boards.BoardProxy;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class History {
-    List<Board> boards = new ArrayList<>();
+    List<BoardProxy> boards = new ArrayList<>();
 
-    public void add(Board board){
-        boards.add(boards.size()+1,board);
+    public void add(BoardProxy proxy){
+        boards.add(proxy);
     }
 
-    public Board undo(){
+    public BoardProxy undo(){
         boards.remove(boards.size()-1);
         return boards.get(boards.size()-1);
     }
 
-    public Board getBoardAtMove(int moveIndex){
+    public List<BoardProxy> getBoards(){
+        return boards.isEmpty() ? null : boards;
+    }
+
+    public BoardProxy getBoardAtMove(int moveIndex){
+        moveIndex = moveIndex -1;
         for (int idx=0; idx< boards.size()- (moveIndex+1);idx++){
             boards.remove(boards.size()-1);
         }

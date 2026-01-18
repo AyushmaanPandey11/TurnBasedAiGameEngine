@@ -1,4 +1,4 @@
-import Entity.boards.TicToeBoard;
+import Entity.boards.TicTacToeBoard;
 import Entity.game.Board;
 import Entity.game.Cell;
 import Entity.game.Move;
@@ -44,7 +44,7 @@ public class GamePlayTest {
 
     @Test
     public void playColWin(){
-        TicToeBoard board =  (TicToeBoard) GameEngine.start("TicTacToe");
+        TicTacToeBoard board =  (TicTacToeBoard) GameEngine.start("TicTacToe");
         int[][] firstPlayerMoves = new int[][]{ {0,0}, {1,0}, {2,0} };
         int[][] secondPlayerMoves = new int[][]{ {0,1}, {1,1}, {2,1} };
         playGame(board,firstPlayerMoves,secondPlayerMoves);
@@ -54,7 +54,7 @@ public class GamePlayTest {
 
     @Test
     public void playRowWin(){
-        TicToeBoard board =  (TicToeBoard) GameEngine.start("TicTacToe");
+        TicTacToeBoard board =  (TicTacToeBoard) GameEngine.start("TicTacToe");
         int[][] firstPlayerMoves = new int[][]{ {2,0}, {2,1}, {2,2} };
         int[][] secondPlayerMoves = new int[][]{ {1,0}, {1,1}, {1,2} };
         playGame(board,firstPlayerMoves,secondPlayerMoves);
@@ -64,7 +64,7 @@ public class GamePlayTest {
 
     @Test
     public void playRevDiagWin(){
-        TicToeBoard board =  (TicToeBoard) GameEngine.start("TicTacToe");
+        TicTacToeBoard board =  (TicTacToeBoard) GameEngine.start("TicTacToe");
         int[][] firstPlayerMove = new int[][]{ {0,2}, {1,1}, {2,0} };
         int[][] secondPlayerMoves = new int[][]{ {0,0}, {1,0}, {1,1} };
         playGame(board, firstPlayerMove,secondPlayerMoves);
@@ -74,7 +74,7 @@ public class GamePlayTest {
 
     @Test
     public void playDiagComputerWin(){
-        TicToeBoard board =  (TicToeBoard) GameEngine.start("TicTacToe");
+        TicTacToeBoard board =  (TicTacToeBoard) GameEngine.start("TicTacToe");
         int[][] firstPlayerMoves = new int[][]{ {0,0}, {1,1}, {2,2} };
         int[][] secondPlayerMoves = new int[][]{ {2,0}, {2,1}, {1,0} };
         playGame(board, firstPlayerMoves,secondPlayerMoves);

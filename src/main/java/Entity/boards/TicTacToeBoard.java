@@ -2,14 +2,14 @@ package Entity.boards;
 
 import Entity.game.*;
 
-import java.util.HashMap;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-public class TicToeBoard implements CellBoard {
+public class TicTacToeBoard implements CellBoard {
     private final Grid[][] cells = new Grid[3][3];
     static RuleSet rules = new RuleSet();
     private History history = new History();
+
 
     public Grid getCell(int row, int col) {
         return cells[row][col];
@@ -30,7 +30,7 @@ public class TicToeBoard implements CellBoard {
         rules.add(new Rule(ticTacToeBoard -> getSearchResult((row,col) -> ticTacToeBoard.getCell(col,row))));
         rules.add(new Rule(ticTacToeBoard -> getDiagonalSearchResult((row) -> ticTacToeBoard.getCell(row,row))));
         rules.add(new Rule(ticTacToeBoard -> getDiagonalSearchResult((row) -> ticTacToeBoard.getCell(row,2-row))));
-        rules.add(new Rule(TicToeBoard::gameWonOrNot));
+        rules.add(new Rule(TicTacToeBoard::gameWonOrNot));
         return rules;
     }
 
@@ -84,18 +84,19 @@ public class TicToeBoard implements CellBoard {
 
     @Override
     public Board move(Move move){
-        TicToeBoard board = copy();
+        TicTacToeBoard board = copy();
         board.setCell(move,move.getPlayer().getValue());
-        history.add(this);
+        history.add(new BoardProxy(this));
         return board;
     }
 
     @Override
-    public TicToeBoard copy() {
-        TicToeBoard boardCopy = new TicToeBoard();
+    public TicTacToeBoard copy() {
+        TicTacToeBoard boardCopy = new TicTacToeBoard();
         for(int row=0; row< 3; row++){
             System.arraycopy(cells[row],0,boardCopy.cells[row],0,3);
         }
+        boardCopy.history = history;
         return boardCopy;
     }
 
@@ -115,3 +116,4 @@ public class TicToeBoard implements CellBoard {
         return result;
     }
 }
+

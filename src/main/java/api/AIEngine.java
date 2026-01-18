@@ -1,6 +1,6 @@
 package api;
 
-import Entity.boards.TicToeBoard;
+import Entity.boards.TicTacToeBoard;
 import Entity.game.*;
 import placements.AttackPlacement;
 import placements.Placement;
@@ -11,7 +11,7 @@ public class AIEngine {
     RuleEngine rules = new RuleEngine();
 
     public Move suggestMove(Board board, Player player) {
-        if (board instanceof TicToeBoard boardInstance) {
+        if (board instanceof TicTacToeBoard boardInstance) {
             int limit = 3;
             Cell cell;
             if (cellsCount(boardInstance) >= limit) {
@@ -28,7 +28,7 @@ public class AIEngine {
         }
     }
 
-    private Cell getOptimalMove(TicToeBoard board, Player player){
+    private Cell getOptimalMove(TicTacToeBoard board, Player player){
         Placement placement = AttackPlacement.getInstance();
         while(placement.next() != null){
             Optional<Cell> cell = placement.place(board,player);
@@ -40,7 +40,7 @@ public class AIEngine {
         return null;
     }
 
-    private Cell getSmartCellToPlay(TicToeBoard board, Player bot){
+    private Cell getSmartCellToPlay(TicTacToeBoard board, Player bot){
         // make move in a cell if it meets this two conditions
         // 1. this move will win bot the game by matching along row/column or diag
         // 2. stop user from winning the game.
@@ -54,12 +54,12 @@ public class AIEngine {
         return getDefendingCell(board, opponent, rules);
     }
 
-    private static Cell getDefendingCell(TicToeBoard board, Player opponent, RuleEngine rules) {
+    private static Cell getDefendingCell(TicTacToeBoard board, Player opponent, RuleEngine rules) {
         for (int row=0; row< 3; row++){
             for (int col=0;col <3; col++){
                 if( board.getCell(row,col) == null){
                     Move move = new Move(new Cell(row,col), opponent);
-                    TicToeBoard boardCopy = (TicToeBoard) board.move(move);
+                    TicTacToeBoard boardCopy = (TicTacToeBoard) board.move(move);
                     if (opponent.getPlayerName().equals(rules.isComplete(boardCopy).getWinner())) {
                         return new Cell(row, col);
                     }
@@ -69,12 +69,12 @@ public class AIEngine {
         return null;
     }
 
-    private static Cell getVictoryCell(TicToeBoard board, Player bot, RuleEngine rules) {
+    private static Cell getVictoryCell(TicTacToeBoard board, Player bot, RuleEngine rules) {
         for (int row=0; row< 3; row++){
             for (int col=0;col <3; col++){
                 if( board.getCell(row,col) == null){
                     Move move = new Move(new Cell(row,col), bot);
-                    TicToeBoard boardCopy = (TicToeBoard) board.move(move);
+                    TicTacToeBoard boardCopy = (TicTacToeBoard) board.move(move);
                     if (bot.getPlayerName().equals(rules.isComplete(boardCopy).getWinner())) {
                         return new Cell(row, col);
                     }
@@ -84,7 +84,7 @@ public class AIEngine {
         return null;
     }
 
-    private int cellsCount(TicToeBoard board){
+    private int cellsCount(TicTacToeBoard board){
         int count =0;
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 3; col++) {
@@ -96,7 +96,7 @@ public class AIEngine {
         return count;
     }
 
-    private Cell getBasicCellToPlay(TicToeBoard boardInstance){
+    private Cell getBasicCellToPlay(TicTacToeBoard boardInstance){
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 3; col++) {
                 if (boardInstance.getCell(row, col) == null) {

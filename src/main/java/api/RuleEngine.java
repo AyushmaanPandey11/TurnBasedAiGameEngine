@@ -1,6 +1,6 @@
 package api;
 
-import Entity.boards.TicToeBoard;
+import Entity.boards.TicTacToeBoard;
 import Entity.game.*;
 
 import java.util.HashMap;
@@ -9,13 +9,13 @@ public class RuleEngine {
     private final HashMap<Class<? extends Board>, RuleSet> ruleMap = new HashMap<>();
 
     public RuleEngine(){
-        ruleMap.put(TicToeBoard.class,TicToeBoard.getRules());
+        ruleMap.put(TicTacToeBoard.class, TicTacToeBoard.getRules());
     }
 
     public GameResult isComplete(Board board) {
         GameResult gameResult = new GameResult(false,"-");
-        if(board instanceof  TicToeBoard boardInstance){
-            RuleSet ruleList = ruleMap.get(TicToeBoard.class);
+        if(board instanceof  TicTacToeBoard boardInstance){
+            RuleSet ruleList = ruleMap.get(TicTacToeBoard.class);
             for (Rule rule : ruleList){
                 GameResult result = rule.getRule().apply(boardInstance);
                 if (result.isOver()){
@@ -27,7 +27,7 @@ public class RuleEngine {
     }
 
     public GameInfo getGameInfo(Board board){
-        if (board instanceof TicToeBoard boardInstance){
+        if (board instanceof TicTacToeBoard boardInstance){
             GameResult gameResult = isComplete(boardInstance);
             char[] players = new char[]{'X','O'};
             Cell forkCell=null;
