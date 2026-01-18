@@ -13,7 +13,7 @@ public class AttackPlacement implements Placement{
 
     AttackPlacement(){}
 
-    public synchronized static Placement getInstance(){
+    public synchronized static AttackPlacement getInstance(){
         instance = (AttackPlacement) Utils.getIfNull(instance, AttackPlacement::new);
         return instance;
     }

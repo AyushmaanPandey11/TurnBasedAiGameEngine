@@ -83,7 +83,7 @@ public class TicTacToeBoard implements CellBoard {
     }
 
     @Override
-    public Board move(Move move){
+    public TicTacToeBoard move(Move move){
         TicTacToeBoard board = copy();
         board.setCell(move,move.getPlayer().getValue());
         history.add(new BoardProxy(this));
@@ -98,6 +98,19 @@ public class TicTacToeBoard implements CellBoard {
         }
         boardCopy.history = history;
         return boardCopy;
+    }
+
+    public enum Symbol {
+        X('X'), O('O');
+        final char marker;
+
+        Symbol(char x) {
+            this.marker = x;
+        }
+
+        public char getMarker() {
+            return marker;
+        }
     }
 
     @Override
