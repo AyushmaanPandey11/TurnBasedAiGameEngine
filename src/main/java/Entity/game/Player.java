@@ -6,6 +6,10 @@ public class Player {
     private final char value;
     private final String playerName;
 
+    public User getUser(){
+        return this.user;
+    }
+
     public Player(char input, String name){
         this.playerName = name;
         this.value = input;

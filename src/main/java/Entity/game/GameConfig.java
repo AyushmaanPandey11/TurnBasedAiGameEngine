@@ -2,7 +2,13 @@ package Entity.game;
 
 public class GameConfig {
     private boolean isTimed;
-    private Integer TimePerMoveLimit;
+    private final Integer TimePerMoveLimit;
+
+    public GameConfig(boolean isTimed, Integer timePerMoveLimit) {
+        this.isTimed = isTimed;
+        TimePerMoveLimit = timePerMoveLimit;
+    }
+
     public void setTimed(boolean timed) {
         this.isTimed = timed;
     }

@@ -30,12 +30,13 @@ public class AIEngine {
 
     private Cell getOptimalMove(TicTacToeBoard board, Player player){
         Placement placement = AttackPlacement.getInstance();
-        while(placement.next() != null){
-            Optional<Cell> cell = placement.place(board,player);
+
+        while(placement != null){
+            Optional<Cell> cell = placement.place(board, player);
             if(cell.isPresent()){
                 return cell.get();
             }
-            placement.next();
+            placement = placement.next();
         }
         return null;
     }
