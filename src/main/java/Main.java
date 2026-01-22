@@ -41,7 +41,7 @@ public class Main {
             }
             System.out.println(board.toString());
         }
-        eventManager.addEvent(new Event(user.getUser(),"Congratulations!! You won","username@gmail.com","win"));
+        eventManager.publish(new Event(user.getUser(),"Congratulations!! You won","username@gmail.com","win"));
         System.out.println("Game Winner: "+ ruleEngine.isComplete(board).getWinner());
     }
 }
