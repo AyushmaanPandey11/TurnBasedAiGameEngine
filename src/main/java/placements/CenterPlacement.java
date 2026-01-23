@@ -26,7 +26,7 @@ public class CenterPlacement implements Placement{
     public Optional<Cell> place(TicTacToeBoard board, Player player) {
         Cell cell = null;
         if( board.getCell(1,1) == null ){
-            cell = new Cell(1,1);
+            cell = Cell.getCell(1,1);
         }
         return Optional.ofNullable(cell);
     }

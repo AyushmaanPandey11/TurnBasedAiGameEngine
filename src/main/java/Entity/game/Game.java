@@ -18,30 +18,35 @@ public class Game {
     }
 
 
-    public void move(Move move, int timestampInMs){
+    public Board move(Move move, int timestampInMs){
+        Board updatedBoard = null;
         int timeTakenForTheMove = timestampInMs - lastMoveTimeStamp;
         move.getPlayer().setTotalTimeUsedInMs(timeTakenForTheMove);
         if (gameConfig.isTimed()){
-            moveForTimedGame(move,timeTakenForTheMove);
+            updatedBoard = moveForTimedGame(move,timeTakenForTheMove);
         } else {
-            board.move(move);
+            updatedBoard = board.move(move);
         }
+        this.board = updatedBoard;
+        return updatedBoard;
     }
 
-    public void moveForTimedGame(Move move, int timeTakenForTheMove){
+    public Board moveForTimedGame(Move move, int timeTakenForTheMove){
+        Board updatedBoard = null;
         if (gameConfig.getTimePerMove() != null){
             if(moveMadeWithinTimeLimit(timeTakenForTheMove)){
-                board.move(move);
+                updatedBoard = board.move(move);
             } else {
                 this.winner = move.getPlayer().flip();
             }
         } else {
             if (moveMadeWithinTimeLimit(move.getPlayer())){
-                board.move(move);
+                updatedBoard = board.move(move);
             } else {
                 this.winner = move.getPlayer().flip();
             }
         }
+        return updatedBoard;
     }
 
     public boolean moveMadeWithinTimeLimit(int timeTakeSinceLastMove) {

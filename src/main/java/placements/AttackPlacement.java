@@ -22,11 +22,11 @@ public class AttackPlacement implements Placement{
         for (int row=0; row< 3; row++){
             for (int col=0;col <3; col++){
                 if( board.getCell(row,col) == null){
-                    Move move = new Move(new Cell(row,col), player);
+                    Move move = new Move(Cell.getCell(row,col), player);
                     TicTacToeBoard boardCopy = board.copy();
                     boardCopy.move(move);
                     if (player.getPlayerName().equals(rules.isComplete(boardCopy).getWinner())) {
-                        return new Cell(row, col);
+                        return Cell.getCell(row,col);
                     }
                 }
             }

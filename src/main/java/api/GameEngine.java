@@ -4,14 +4,15 @@ import Entity.boards.TicTacToeBoard;
 import Entity.game.*;
 
 public class GameEngine {
-    public void move(Board board, Move move ){
+    public Board move(Board board, Move move ){
         if (move == null){
             System.out.println("Null Move coming");
-            return;
+            return board;
         }
-        if(board instanceof TicTacToeBoard boardInstance){
-            board.move(move);
+        if(board instanceof TicTacToeBoard ){
+            board = board.move(move);
         }
+        return board;
     }
     public static Board start(String type){
         if(type.equals("TicTacToe")){

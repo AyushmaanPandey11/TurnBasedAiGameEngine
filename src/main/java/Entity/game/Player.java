@@ -11,6 +11,7 @@ public class Player {
     }
 
     public Player(char input, String name){
+        this.user = new User((int) (Math.random() * 100));
         this.playerName = name;
         this.value = input;
     }

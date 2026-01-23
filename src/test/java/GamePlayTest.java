@@ -28,15 +28,15 @@ public class GamePlayTest {
                 row = firstPlayerMove[next][0];
                 col = firstPlayerMove[next][1];
                 System.out.println("Round: "+next);
-                Move userMove = new Move(new Cell(row, col), user);
-                gameEngine.move(board, userMove);
+                Move userMove = new Move(Cell.getCell(row,col), user);
+                board = gameEngine.move(board, userMove);
                 System.out.println("User Move:\n" + board.toString());
             }
             if(gameManager.isComplete(board).isOver()) break;
             row = secondPlayerMove[next][0];
             col = secondPlayerMove[next][1];
-            Move computerMove = new Move(new Cell(row,col),computer);
-            gameEngine.move(board, computerMove);
+            Move computerMove = new Move(Cell.getCell(row,col),computer);
+            board = gameEngine.move(board, computerMove);
             System.out.println("Bot Move:\n" + board.toString());
             next++;
         }

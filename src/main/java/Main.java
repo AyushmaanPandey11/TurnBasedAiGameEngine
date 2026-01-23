@@ -33,7 +33,7 @@ public class Main {
             int row,col;
             row = scanner.nextInt();
             col = scanner.nextInt();
-            Move userMove = new Move(new Cell(row,col),user);
+            Move userMove = new Move(Cell.getCell(row,col),user);
             gameEngine.move(board,userMove);
             if(!ruleEngine.isComplete(board).isOver()){
                 Move computerMove = aiEngine.suggestMove(board,computer);

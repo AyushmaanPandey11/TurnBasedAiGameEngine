@@ -10,6 +10,6 @@ public class SmsService {
     }
 
     public void send(SMSCommand command){
-        sendSMS(command.getDetails().user,command.getDetails().message);
+        sendSMS(command.getUser(),command.getMessage());
     }
 }

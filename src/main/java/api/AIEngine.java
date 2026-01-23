@@ -59,10 +59,10 @@ public class AIEngine {
         for (int row=0; row< 3; row++){
             for (int col=0;col <3; col++){
                 if( board.getCell(row,col) == null){
-                    Move move = new Move(new Cell(row,col), opponent);
+                    Move move = new Move(Cell.getCell(row,col), opponent);
                     TicTacToeBoard boardCopy = (TicTacToeBoard) board.move(move);
                     if (opponent.getPlayerName().equals(rules.isComplete(boardCopy).getWinner())) {
-                        return new Cell(row, col);
+                        return Cell.getCell(row,col);
                     }
                 }
             }
@@ -74,10 +74,10 @@ public class AIEngine {
         for (int row=0; row< 3; row++){
             for (int col=0;col <3; col++){
                 if( board.getCell(row,col) == null){
-                    Move move = new Move(new Cell(row,col), bot);
+                    Move move = new Move(Cell.getCell(row,col), bot);
                     TicTacToeBoard boardCopy = (TicTacToeBoard) board.move(move);
                     if (bot.getPlayerName().equals(rules.isComplete(boardCopy).getWinner())) {
-                        return new Cell(row, col);
+                        return Cell.getCell(row,col);
                     }
                 }
             }
@@ -101,7 +101,7 @@ public class AIEngine {
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 3; col++) {
                 if (boardInstance.getCell(row, col) == null) {
-                    return new Cell(row, col);
+                    return Cell.getCell(row,col);
                 }
             }
         }

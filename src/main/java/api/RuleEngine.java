@@ -38,21 +38,21 @@ public class RuleEngine {
                 for (int outRow = 0; outRow < 3; outRow++) {
                     for (int outCol = 0; outCol < 3; outCol++) {
                         if(boardInstance.getCell(outRow,outCol) == null){
-                            TicTacToeBoard board1 = boardInstance.move(new Move(new Cell(outRow, outCol), player));
+                            boardInstance.move(new Move(Cell.getCell(outRow,outCol), player));
                             // simulating opponent to make defensive move
                             DefendPlacement defendPlacement = DefendPlacement.getInstance();
-                            Optional<Cell> defendingCell = defendPlacement.place(board1,player.flip());
+                            Optional<Cell> defendingCell = defendPlacement.place(boardInstance,player.flip());
                             if(defendingCell.isPresent()){
-                                board1.move(new Move(defendingCell.get(),player.flip()));
+                                boardInstance.move(new Move(defendingCell.get(),player.flip()));
                                 // after making defensive move by opponent, check if we can win by making attacking move
                                 AttackPlacement attackPlacement = AttackPlacement.getInstance();
-                                Optional<Cell> attackingCell = attackPlacement.place(board1,player);
+                                Optional<Cell> attackingCell = attackPlacement.place(boardInstance,player);
                                 if (attackingCell.isPresent()){
                                     return new GameInfoBuilder()
                                             .setWinner(gameResult.getWinner())
                                             .setHasFork(true)
                                             .setPlayer(player.flip())
-                                            .setForkCell(new Cell(outRow,outCol))
+                                            .setForkCell(Cell.getCell(outRow,outCol))
                                             .setIsOver(gameResult.isOver())
                                             .build();
                                 }
