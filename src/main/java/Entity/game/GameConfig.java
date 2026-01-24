@@ -17,7 +17,7 @@ public class GameConfig {
         return this.isTimed;
     }
 
-    public Integer getTimePerMove() {
+    public Integer getTimePerMoveLimitPerMove() {
         return this.TimePerMoveLimit;
     }
 }

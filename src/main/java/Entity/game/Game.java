@@ -1,14 +1,17 @@
 package Entity.game;
 
+import api.RuleEngine;
+
 public class Game {
     private GameConfig gameConfig;
     private Board board;
     private Player winner;
-    private int lastMoveTimeStamp;
-    private int maxTimePerPlayer;
-    private int maxTimePerMove;
+    private Integer lastMoveTimeStamp;
+    private Integer maxTimePerPlayer;
+    private Integer maxTimePerMove;
+    private RuleEngine ruleEngine = new RuleEngine();
 
-    public Game(GameConfig gameConfig, Board board, Player winner, int lastMoveTimeStamp, int maxTimePerPlayer, int maxTimePerMove) {
+    public Game(GameConfig gameConfig, Board board, Player winner, int lastMoveTimeStamp, int maxTimePerPlayer, Integer maxTimePerMove) {
         this.gameConfig = gameConfig;
         this.board = board;
         this.winner = winner;
@@ -26,25 +29,21 @@ public class Game {
             updatedBoard = moveForTimedGame(move,timeTakenForTheMove);
         } else {
             updatedBoard = board.move(move);
+            this.board = updatedBoard;
         }
-        this.board = updatedBoard;
+        if( winner == null && ruleEngine.isComplete(board).isOver() ){
+            winner = move.getPlayer();
+        }
         return updatedBoard;
     }
 
     public Board moveForTimedGame(Move move, int timeTakenForTheMove){
         Board updatedBoard = null;
-        if (gameConfig.getTimePerMove() != null){
-            if(moveMadeWithinTimeLimit(timeTakenForTheMove)){
+        if ((gameConfig.getTimePerMoveLimitPerMove() == null || moveMadeWithinTimeLimit(timeTakenForTheMove)) && moveMadeWithinTimeLimit(move.getPlayer())){
                 updatedBoard = board.move(move);
-            } else {
-                this.winner = move.getPlayer().flip();
-            }
+                this.board = updatedBoard;
         } else {
-            if (moveMadeWithinTimeLimit(move.getPlayer())){
-                updatedBoard = board.move(move);
-            } else {
-                this.winner = move.getPlayer().flip();
-            }
+            this.winner = move.getPlayer().flip();
         }
         return updatedBoard;
     }
