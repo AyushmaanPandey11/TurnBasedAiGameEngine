@@ -1,5 +1,6 @@
 package api;
 
+import Entity.boards.Board;
 import Entity.boards.CellBoard;
 import Entity.boards.TicTacToeBoard;
 import Entity.game.*;

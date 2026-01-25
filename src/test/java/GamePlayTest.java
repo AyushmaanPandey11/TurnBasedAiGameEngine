@@ -1,5 +1,5 @@
 import Entity.boards.TicTacToeBoard;
-import Entity.game.Board;
+import Entity.boards.Board;
 import Entity.game.Cell;
 import Entity.game.Move;
 import Entity.game.Player;

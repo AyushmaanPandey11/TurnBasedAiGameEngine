@@ -1,5 +1,6 @@
 package Entity.game;
 
+import Entity.boards.Board;
 import api.RuleEngine;
 
 public class Game {

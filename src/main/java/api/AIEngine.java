@@ -1,110 +1,19 @@
 package api;
 
+import Entity.boards.Board;
 import Entity.boards.TicTacToeBoard;
 import Entity.game.*;
-import placements.AttackPlacement;
-import placements.Placement;
-
-import java.util.Optional;
+import Strategy.StrategyFactory;
 
 public class AIEngine {
-    RuleEngine rules = new RuleEngine();
 
     public Move suggestMove(Board board, Player player) {
         if (board instanceof TicTacToeBoard boardInstance) {
-            int limit = 3;
-            Cell cell;
-            if (cellsCount(boardInstance) >= limit) {
-                cell = getSmartCellToPlay(boardInstance, player);
-                if(cell != null ) return new Move(cell,player);
-            } else if ( cellsCount(boardInstance) +1 >= limit  ){
-                cell = getOptimalMove(boardInstance,player);
-                if (cell != null) return new Move(cell,player);
-            }
-            cell = getBasicCellToPlay(boardInstance);
+            StrategyFactory strategyFactory = new StrategyFactory();
+            Cell cell = strategyFactory.getStrategy(boardInstance,player).getOptimalMove(boardInstance,player);
             return new Move(cell,player);
         } else {
             throw new IllegalArgumentException();
         }
-    }
-
-    private Cell getOptimalMove(TicTacToeBoard board, Player player){
-        Placement placement = AttackPlacement.getInstance();
-
-        while(placement != null){
-            Optional<Cell> cell = placement.place(board, player);
-            if(cell.isPresent()){
-                return cell.get();
-            }
-            placement = placement.next();
-        }
-        return null;
-    }
-
-    private Cell getSmartCellToPlay(TicTacToeBoard board, Player bot){
-        // make move in a cell if it meets this two conditions
-        // 1. this move will win bot the game by matching along row/column or diag
-        // 2. stop user from winning the game.
-
-        // victory move
-        Cell row = getVictoryCell(board, bot, rules);
-        if (row != null) return row;
-
-        // defensive move
-        Player opponent = bot.flip();
-        return getDefendingCell(board, opponent, rules);
-    }
-
-    private static Cell getDefendingCell(TicTacToeBoard board, Player opponent, RuleEngine rules) {
-        for (int row=0; row< 3; row++){
-            for (int col=0;col <3; col++){
-                if( board.getCell(row,col) == null){
-                    Move move = new Move(Cell.getCell(row,col), opponent);
-                    TicTacToeBoard boardCopy = (TicTacToeBoard) board.move(move);
-                    if (opponent.getPlayerName().equals(rules.isComplete(boardCopy).getWinner())) {
-                        return Cell.getCell(row,col);
-                    }
-                }
-            }
-        }
-        return null;
-    }
-
-    private static Cell getVictoryCell(TicTacToeBoard board, Player bot, RuleEngine rules) {
-        for (int row=0; row< 3; row++){
-            for (int col=0;col <3; col++){
-                if( board.getCell(row,col) == null){
-                    Move move = new Move(Cell.getCell(row,col), bot);
-                    TicTacToeBoard boardCopy = (TicTacToeBoard) board.move(move);
-                    if (bot.getPlayerName().equals(rules.isComplete(boardCopy).getWinner())) {
-                        return Cell.getCell(row,col);
-                    }
-                }
-            }
-        }
-        return null;
-    }
-
-    private int cellsCount(TicTacToeBoard board){
-        int count =0;
-        for (int row = 0; row < 3; row++) {
-            for (int col = 0; col < 3; col++) {
-                if (board.getCell(row, col) != null) {
-                    count = count+1;
-                }
-            }
-        }
-        return count;
-    }
-
-    private Cell getBasicCellToPlay(TicTacToeBoard boardInstance){
-        for (int row = 0; row < 3; row++) {
-            for (int col = 0; col < 3; col++) {
-                if (boardInstance.getCell(row, col) == null) {
-                    return Cell.getCell(row,col);
-                }
-            }
-        }
-        return null;
     }
 }
